@@ -2,9 +2,9 @@
 :root {
     --primary-color: #3b82f6;
     --primary-dark: #2563eb;
-    --secondary-color: #1e1e1e; /* Darker background */
-    --text-color: #e2e8f0; /* Lighter text for dark theme */
-    --text-light: #a1a1aa; /* Lighter secondary text */
+    --secondary-color: #1e1e1e;
+    --text-color: #e2e8f0;
+    --text-light: #a1a1aa; 
     --white: #ffffff;
     --black: #121212; /* Darker black */
     --gray-100: #1f1f1f;
@@ -24,8 +24,8 @@
     --transition-slow: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-    --card-bg: #1a1a1a; /* Dark card background */
-    --input-bg: #2a2a2a; /* Dark input background */
+    --card-bg: #1a1a1a;
+    --input-bg: #2a2a2a; 
   }
   
   * {

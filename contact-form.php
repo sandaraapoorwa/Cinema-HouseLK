@@ -1,5 +1,4 @@
 <?php
-// Disable display errors to prevent HTML output
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 ini_set('error_log', '/opt/homebrew/var/log/php_errors.log');
@@ -12,13 +11,11 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get form data with sanitization
     $firstName = filter_input(INPUT_POST, 'firstName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $lastName = filter_input(INPUT_POST, 'lastName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $comments = filter_input(INPUT_POST, 'comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
-    // Initialize errors array
     $errors = [];
     
     // Validate data
@@ -40,7 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors['comments'] = 'Comments are required';
     }
     
-    // Check if there are any validation errors
     if (!empty($errors)) {
         echo json_encode([
             'success' => false,
@@ -71,7 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     
-    // Append new submission
     $submissions[] = $submission;
     
     // Save back to JSON file
@@ -83,10 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
     
-    // Initialize PHPMailer
     $mail = new PHPMailer(true);
     
-    // Buffer debug output to prevent breaking JSON
     ob_start();
     $mail->SMTPDebug = 3; // Detailed debug output
     $mail->Debugoutput = function($str, $level) {
@@ -98,11 +91,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'apoorwasandara@gmail.com'; // Your Gmail address
-        $mail->Password = 'ncdjxjdmexrehflf'; // Replace with your Gmail App Password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Use SSL encryption
-        $mail->Port = 465; // Gmail SMTP port
-        $mail->CharSet = 'UTF-8'; // Ensure proper encoding
+        $mail->Username = 'apoorwasandara@gmail.com';
+        $mail->Password = 'ncdjxjdmexrehflf'; 
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465; 
+        $mail->CharSet = 'UTF-8'; 
         $mail->Timeout = 30; // Increase timeout to 30 seconds
         $mail->SMTPOptions = [
             'ssl' => [
@@ -110,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'verify_peer_name' => false,
                 'allow_self_signed' => true
             ]
-        ]; // Relax SSL verification for local testing (remove in production)
+        ];
 
         // Prepare user email
         $userSubject = "Thank you for contacting CinemaHouseLK";
@@ -137,7 +130,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </html>
         ";
 
-        // Prepare admin email
         $adminSubject = "New Contact Form Submission from " . htmlspecialchars($firstName) . " " . htmlspecialchars($lastName);
         $adminMessage = "
         <html>
@@ -187,10 +179,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Body = $adminMessage;
         $mail->send();
 
-        // Clear debug output buffer
         ob_end_clean();
 
-        // Return success response
         echo json_encode([
             'success' => true,
             'message' => 'Form submitted successfully and emails sent',
@@ -206,7 +196,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ]
         ]);
     } catch (Exception $e) {
-        // Clear debug output buffer
         ob_end_clean();
 
         // Log error and return response

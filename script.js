@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // GSAP ScrollTrigger setup
     gsap.registerPlugin(ScrollTrigger);
-    
-    // Page loader
     const loader = document.querySelector(".loader");
     
     window.addEventListener("load", () => {
@@ -26,10 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
     
-    // Set current year in footer
     document.getElementById("current-year").textContent = new Date().getFullYear();
     
-    // Mobile menu toggle
     const menuToggle = document.querySelector(".menu-toggle");
     const nav = document.querySelector(".nav");
     
@@ -38,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const isExpanded = nav.classList.contains("active");
       menuToggle.setAttribute("aria-expanded", isExpanded);
     
-      // Change icon
       const icon = menuToggle.querySelector("i");
       if (isExpanded) {
         icon.classList.remove("fa-bars");
@@ -49,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     
-    // Header scroll behavior
     let lastScrollTop = 0;
     const header = document.querySelector(".header");
     
@@ -57,10 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
       if (scrollTop > lastScrollTop && scrollTop > 100) {
-        // Scrolling down
         header.classList.add("hidden");
       } else {
-        // Scrolling up
         header.classList.remove("hidden");
       }
     
@@ -104,23 +96,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const indicators = document.querySelectorAll(".indicator");
     
     function showSlide(index) {
-      // Hide all slides
       slides.forEach((slide) => slide.classList.remove("active"));
       indicators.forEach((indicator) => indicator.classList.remove("active"));
     
-      // Show the selected slide
       slides[index].classList.add("active");
       indicators[index].classList.add("active");
       currentSlide = index;
     }
     
-    // Auto-advance slides
     let slideInterval = setInterval(() => {
       currentSlide = (currentSlide + 1) % slides.length;
       showSlide(currentSlide);
     }, 5000);
     
-    // Click on indicators
     indicators.forEach((indicator, index) => {
       indicator.addEventListener("click", () => {
         clearInterval(slideInterval);
@@ -207,13 +195,11 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     ];
     
-    // Load static favorites
     let favorites = [...staticFavorites];
     let selectedFavorites = [];
     renderFavorites();
     updateSelectedCount();
     
-    // Search functionality
     searchButton.addEventListener("click", performSearch);
     searchInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
@@ -221,7 +207,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     
-    // Clear selection button
     if (clearSelectionBtn) {
       clearSelectionBtn.addEventListener("click", () => {
         selectedFavorites = [];
@@ -384,10 +369,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const index = selectedFavorites.indexOf(id);
       
       if (index === -1) {
-        // Add to selected
         selectedFavorites.push(id);
       } else {
-        // Remove from selected
         selectedFavorites.splice(index, 1);
       }
       
@@ -442,7 +425,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       );
     
-      // Add event listeners to remove buttons
       const removeButtons = favoritesGrid.querySelectorAll(".remove-button");
       removeButtons.forEach((button) => {
         button.addEventListener("click", function (e) {
@@ -463,7 +445,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
       
-      // Add click event to cards for selection
       cards.forEach(card => {
         card.addEventListener("click", function() {
           const showId = Number.parseInt(this.getAttribute("data-id"));
@@ -480,7 +461,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
     
-    // Helper function to strip HTML tags
     function stripHtml(html) {
       const temp = document.createElement("div");
       temp.innerHTML = html;
@@ -497,21 +477,17 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
     
       if (validateForm()) {
-        // Simulate form submission
         submitBtn.textContent = "Submitting...";
         submitBtn.disabled = true;
     
-        // Animate form submission
         gsap.to(contactForm, {
           opacity: 0.7,
           scale: 0.98,
           duration: 0.3,
         });
     
-        // Get form data
         const formData = new FormData(contactForm);
         
-        // Send form data to PHP script
         fetch('contact-form.php', {
           method: 'POST',
           body: formData
@@ -524,7 +500,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(data => {
           if (data.success) {
-            // Show success message
+
             gsap.to(contactForm, {
               display: "none",
               opacity: 0,
@@ -539,7 +515,6 @@ document.addEventListener("DOMContentLoaded", () => {
               },
             });
           } else {
-            // Handle server-side validation errors
             if (data.errors) {
               for (const [field, message] of Object.entries(data.errors)) {
                 showError(field, message);
@@ -645,7 +620,6 @@ document.addEventListener("DOMContentLoaded", () => {
       errorElement.textContent = message;
       field.classList.add("error");
     
-      // Animate error message appearance
       gsap.fromTo(errorElement, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.3 });
     
       // Highlight field with error
@@ -674,7 +648,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return re.test(String(email).toLowerCase());
     }
     
-    // Add input event listeners to clear errors on typing
     const formInputs = contactForm.querySelectorAll("input, textarea");
     formInputs.forEach((input) => {
       input.addEventListener("input", function () {
